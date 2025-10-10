@@ -9,18 +9,36 @@ const users = [
     name: "System Admin"
   },
   {
-    email: "mahmoud@uni.edu.eg",
+    email: "user0@uni.edu.eg",
     password: "123456",
     role: "student",
-    name: "Mahmoud Ali",
+    name: "user0",
     level:"2",
     group:"c"
   },
   {
-    email: "marwa@uni.edu.eg",
+    email: "user1@uni.edu.eg",
     password: "654321",
     role: "student",
-    name: "Marwa"
+    name: "user1",
+    level:"2",
+    group:"a"
+  },
+  {
+    email: "user2@uni.edu.eg",
+    password: "654321",
+    role: "student",
+    name: "user2",
+    level:"2",
+    group:"b"
+  },
+  {
+    email: "user3@uni.edu.eg",
+    password: "654321",
+    role: "student",
+    name: "user3",
+    level:"2",
+    group:"d"
   }
 ];
 
@@ -93,3 +111,4 @@ function logout() {
   localStorage.removeItem("sessionUser");
   window.location.href = "index.html";
 }
+
