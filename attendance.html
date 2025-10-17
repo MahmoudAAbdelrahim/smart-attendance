@@ -4,12 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Student | Smart Attendance</title>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- خط Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      /* خلفية متدرجة حيوية */
       background: linear-gradient(135deg, #0f172a, #1e3a8a, #3b82f6);
       background-size: 300% 300%;
       color: #f1f5f9;
@@ -19,24 +24,33 @@
 
 <body class="min-h-screen flex flex-col text-gray-100">
 
-  <!-- Navbar -->
+  <!-- ================== Navbar ================== -->
   <nav class="bg-white/10 backdrop-blur-md border-b border-white/20 px-6 py-4 flex justify-between items-center shadow-md">
-    <h1 class="text-xl font-semibold tracking-tight text-white">Smart Attendance <span class="text-blue-300">System</span></h1>
+    <!-- شعار النظام -->
+    <h1 class="text-xl font-semibold tracking-tight text-white">
+      Smart Attendance <span class="text-blue-300">System</span>
+    </h1>
+    <!-- زر تسجيل الخروج -->
     <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200">
       Logout
     </button>
   </nav>
 
+  <!-- ================== Main Content ================== -->
   <main class="flex-grow p-8">
     <div class="max-w-4xl mx-auto">
+
+      <!-- Header الطالب -->
       <header class="mb-6 text-center">
-        <h2 class="text-2xl font-semibold text-white"> <span id="studentName" class="text-blue-300">Student</span> </h2>
+        <h2 class="text-2xl font-semibold text-white">
+          <span id="studentName" class="text-blue-300">Student</span>
+        </h2>
         <p class="text-blue-200">Choose your lecture then request OTP to mark attendance.</p>
       </header>
 
-      <!-- Lectures container -->
+      <!-- ================== Lectures List ================== -->
       <div id="lecturesContainer" class="space-y-4">
-        <!-- Example Lecture Card -->
+        <!-- Example Lecture Card (سيتم تكراره ديناميكيًا عبر JS) -->
         <div class="bg-white/80 text-gray-900 p-6 rounded-2xl backdrop-blur-md border border-white/40 shadow-lg hover:scale-[1.01] transition">
           <h3 class="text-lg font-semibold"> Lecture Name</h3>
           <p class="text-sm text-gray-700">Time: 10:00 AM - 12:00 PM</p>
@@ -46,52 +60,42 @@
         </div>
       </div>
 
+      <!-- رسالة عدم وجود محاضرات -->
       <div id="noLectures" class="text-center text-blue-200 mt-12 hidden">
         <p class="text-lg font-medium">No lectures available for your group/level.</p>
       </div>
     </div>
   </main>
 
-  <main class="flex-grow p-8">
-  <div class="max-w-4xl mx-auto">
-    <header class="mb-6 text-center">
-      <h2 class="text-2xl font-semibold text-white">
-        <span id="studentName" class="text-blue-300">Student</span>
-      </h2>
-      <p class="text-blue-200">Choose your lecture then request OTP to mark attendance.</p>
-    </header>
-
-    <!-- Lectures container -->
-    <div id="lecturesContainer" class="space-y-4"></div>
-
-    <div id="noLectures" class="text-center text-blue-200 mt-12 hidden">
-      <p class="text-lg font-medium">No lectures available for your group/level.</p>
+  <!-- ================== My Attendance Section ================== -->
+  <section class="mt-12">
+    <h3 class="text-xl font-semibold text-blue-300 mb-4 text-center"> My lectures</h3>
+    <div id="myAttendanceContainer" class="bg-white/20 rounded-2xl p-4 backdrop-blur-md">
+      <table class="w-full text-left text-white border-separate border-spacing-y-2">
+        <thead>
+          <tr class="text-blue-200">
+            <th class="py-2">Lecture</th>
+            <th class="py-2">Date</th>
+            <th class="py-2">OTP Used</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTableBody">
+          <!-- سيتم ملؤها ديناميكيًا بواسطة JS -->
+        </tbody>
+      </table>
     </div>
+  </section>
 
-    <!-- My Attendance Section -->
-    <section class="mt-12">
-      <h3 class="text-xl font-semibold text-blue-300 mb-4 text-center"> My lectures</h3>
-      <div id="myAttendanceContainer" class="bg-white/20 rounded-2xl p-4 backdrop-blur-md">
-        <table class="w-full text-left text-white border-separate border-spacing-y-2">
-          <thead>
-            <tr class="text-blue-200">
-              <th class="py-2">Lecture</th>
-              <th class="py-2">Date</th>
-              <th class="py-2">OTP Used</th>
-            </tr>
-          </thead>
-          <tbody id="attendanceTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-  </div>
-</main>
+  <!-- Footer -->
+  <footer class="text-center text-blue-200 text-sm py-4">
+    © 2025 smart-attendance. All rights reserved.
+  </footer>
 
-
-  <footer class="text-center text-blue-200 text-sm py-4">© 2025 smart-attendance. All rights reserved.</footer>
-
-  <!-- auth.js must be loaded before attendance.js -->
+  <!-- ================== Scripts ================== -->
+  <!-- auth.js أولًا لأنه يتحكم بالجلسة -->
   <script src="assets/js/auth.js"></script>
+  <!-- attendance.js لإدارة عرض المحاضرات وحضور الطالب -->
   <script src="assets/js/attendance.js"></script>
+
 </body>
 </html>

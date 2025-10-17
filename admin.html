@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lectures Management | Smart Attendance</title>
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
+
+  <!--
+    شرح:
+    هنا نضع ستايل عام للصفحة. الخلفية و font و ألوان.
+    احتفظت باستخدام Tailwind للـ utilities.
+  -->
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -14,22 +19,47 @@
       color: #f1f5f9;
     }
   </style>
+</head>
+
 <body class="min-h-screen flex flex-col text-gray-100">
 
-  <!-- Navbar -->
+  <!--
+    Navbar:
+    يحتوي عنوان النظام وزر الخروج ورابط لصفحة إدارة الطلاب.
+    زر الخروج له id="logoutBtn" ويُفترض أن ملف JS يتعامل معه.
+  -->
   <nav class="bg-white/10 backdrop-blur-md border-b border-white/20 p-4 flex justify-between items-center shadow-md">
     <h1 class="text-xl font-semibold text-white">Smart Attendance <span class="text-green-300">Lectures</span></h1>
+
+    <!--
+      المنطقة اليمنى في الـ Navbar:
+      - رابط للانتقال لصفحة إدارة الطلاب (admin-students.html)
+      - زر Logout الذي يجب أن يربط بـ auth/logout logic في JS
+    -->
     <div class="flex gap-3">
       <a href="admin-students.html" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white">Students</a>
       <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">Logout</button>
     </div>
   </nav>
 
-  <!-- Content -->
+  <!--
+    Main Content:
+    قسم مركزي يحوي:
+    - نموذج إضافة محاضرة جديد (lectureForm)
+    - جدول عرض المحاضرات (tbody id="lecturesTable")
+    الملاحظة: الحقول لها ids مُستخدمة في JS (lectureName, lectureTime, lectureLevel, lectureGroup).
+  -->
   <main class="flex-1 p-8 max-w-5xl mx-auto w-full">
+    <!-- Add Lecture Card -->
     <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/20 shadow-lg">
       <h2 class="text-2xl font-semibold text-white mb-6">Add New Lecture</h2>
 
+      <!--
+        فورم إضافة محاضرة.
+        - id="lectureForm" مهم لأنه مربوط بمستمع submit في JS.
+        - الحقول التالية يجب أن توجد بنفس الـ ids في الملف الجافاسكربت:
+          lectureName, lectureTime, lectureLevel, lectureGroup
+      -->
       <form id="lectureForm" class="grid grid-cols-2 gap-4">
         <input id="lectureName" type="text" placeholder="Lecture Name" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
         <input id="lectureTime" type="datetime-local" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
@@ -39,6 +69,12 @@
       </form>
     </div>
 
+    <!--
+      Lectures List:
+      - الجدول يعرض المحاضرات المخزنة في localStorage عبر JS.
+      - tbody له id="lecturesTable" ويتم تعبئته ديناميكياً.
+      - الأعمدة تتطابق مع خصائص العنصر lecture في الجافاسكربت (name, time, level, group, otp, active).
+    -->
     <div class="mt-10 bg-white/10 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg">
       <h3 class="text-xl font-semibold mb-4 text-white">Lectures List</h3>
       <div class="overflow-x-auto">
@@ -54,15 +90,29 @@
               <th class="py-3 px-4">Actions</th>
             </tr>
           </thead>
+
+          <!--
+            مكان تعبئة صفوف المحاضرات ديناميكياً.
+            تأكد أن ملف JS يقوم بالـ render إلى هذا العنصر.
+          -->
           <tbody id="lecturesTable" class="divide-y divide-white/10"></tbody>
         </table>
       </div>
     </div>
   </main>
 
+  <!--
+    تحميل ملفات JS:
+    - admin.js : قد يحتوي اللوجيك العام أو ما سبق كنت تستخدمه. تأكد محتواه.
+    - main.js  : يجب أن يحتوي على كود الـ logout وإدارة التبويبات إن وُجِدت.
+    - admin-students.js : ملف إدارة الطلاب. هنا يتم تحميله من أجل أن الرابط "Students" يشتغل بدون أخطاء.
+    ملاحظة مهمة:
+    رتب السكربتات بحيث لا ينفذ سكربت يحتاج عناصر غير موجودة في الصفحة.
+    إذا كان ملف JS يفترض وجود عناصر غير موجودة هنا سيسبب خطأ ويوقف باقي الكود.
+  -->
   <script src="assets/js/admin.js"></script>
   <script src="assets/js/main.js"></script>
-<script src="assets/js/admin-students.js"></script>
+  <script src="assets/js/admin-students.js"></script>
 
 </body>
 </html>

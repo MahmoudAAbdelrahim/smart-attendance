@@ -1,12 +1,23 @@
 // ================== STUDENTS MANAGEMENT ==================
+// هذا القسم مسؤول عن إدارة بيانات الطلاب (إضافة - تعديل - حذف - عرض).
+
+// تحميل قائمة الطلاب من localStorage أو إنشاء مصفوفة فاضية لو مش موجودة.
 let students = JSON.parse(localStorage.getItem("studentsList")) || [];
+
+// الحصول على عنصر الجدول اللي هيتم عرض الطلاب فيه.
 const studentsTable = document.getElementById("studentsTable");
+
 // ================== AUTH CHECK ==================
+// التحقق من أن المستخدم الحالي مسجل دخول.
+// لو مفيش مستخدم مسجل → يتم تحويله مباشرة لصفحة تسجيل الدخول.
 const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 if (!loggedInUser) {
-  window.location.href = "/smart-attendance/index.html"; // عدّل المسار حسب مكان ملفك
+  window.location.href = "/smart-attendance/index.html"; // عدّل المسار حسب مكان المشروع عندك
 }
 
+// ================== FUNCTION: renderStudents ==================
+// وظيفة: عرض الطلاب في الجدول على الواجهة.
+// بتفرغ الجدول الأول، وبعدها بتضيف صف لكل طالب من المصفوفة.
 function renderStudents() {
   studentsTable.innerHTML = "";
   students.forEach((student, index) => {
@@ -25,6 +36,9 @@ function renderStudents() {
   });
 }
 
+// ================== EVENT: studentForm Submit ==================
+// عند إرسال النموذج، بيمنع التحديث الافتراضي للصفحة.
+// بعدين بيجمع البيانات من الحقول، ويضيف الطالب للمصفوفة والـlocalStorage.
 document.getElementById("studentForm").addEventListener("submit", (e) => {
   e.preventDefault();
   const student = {
@@ -35,18 +49,29 @@ document.getElementById("studentForm").addEventListener("submit", (e) => {
     level: studentLevel.value,
     group: studentGroup.value,
   };
+
+  // حفظ الطالب في المصفوفة وتحديث التخزين المحلي.
   students.push(student);
   localStorage.setItem("studentsList", JSON.stringify(students));
+
+  // تحديث الجدول وإعادة ضبط الحقول.
   renderStudents();
   e.target.reset();
 });
 
+// ================== FUNCTION: deleteStudent ==================
+// وظيفة: حذف طالب من القائمة حسب الـ index.
+// بعد الحذف يتم تحديث الـlocalStorage وإعادة عرض الجدول.
 function deleteStudent(index) {
   students.splice(index, 1);
   localStorage.setItem("studentsList", JSON.stringify(students));
   renderStudents();
 }
 
+// ================== FUNCTION: editStudent ==================
+// وظيفة: تعديل بيانات طالب.
+// بيملأ الحقول بالقيم الحالية للطالب عشان المستخدم يعدّلها.
+// بعد كده بيحذف النسخة القديمة من الطالب ويفضل ينتظر الإرسال الجديد للنموذج.
 function editStudent(index) {
   const s = students[index];
   studentName.value = s.name;
@@ -55,9 +80,12 @@ function editStudent(index) {
   studentPassword.value = s.password;
   studentLevel.value = s.level;
   studentGroup.value = s.group;
+
   students.splice(index, 1);
   localStorage.setItem("studentsList", JSON.stringify(students));
   renderStudents();
 }
 
+// ================== INITIAL CALL ==================
+// تشغيل أولي عند تحميل الصفحة لعرض الطلاب المخزنين.
 renderStudents();

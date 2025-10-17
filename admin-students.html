@@ -1,48 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- تعريف الترميز وضبط طريقة العرض -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- عنوان الصفحة في المتصفح -->
   <title>Students Management | Smart Attendance</title>
+
+  <!-- استدعاء مكتبة TailwindCSS للتصميم السريع -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e3a8a, #3b82f6);
-      background-size: 300% 300%;
-      color: #f1f5f9;
-    }
-  </style>
+
+<!-- ================== تنسيق عام للصفحة ================== -->
+<style>
+  body {
+    font-family: 'Inter', sans-serif; /* نوع الخط */
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #3b82f6); /* تدرج لوني */
+    background-size: 300% 300%; /* لتوسيع التدرج */
+    color: #f1f5f9; /* لون النص */
+  }
+</style>
+
 <body class="min-h-screen flex flex-col text-gray-100">
 
-  <!-- Navbar -->
+  <!-- ================== شريط التنقل (Navbar) ================== -->
+  <!-- يحتوي على اسم النظام + زر انتقال للـ Lectures + زر تسجيل خروج -->
   <nav class="bg-white/10 backdrop-blur-md border-b border-white/20 p-4 flex justify-between items-center shadow-md">
-    <h1 class="text-xl font-semibold text-white">Smart Attendance <span class="text-blue-300">Students</span></h1>
+    <h1 class="text-xl font-semibold text-white">
+      Smart Attendance <span class="text-blue-300">Students</span>
+    </h1>
+
     <div class="flex gap-3">
-      <a href="admin.html" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-white">Lectures</a>
-      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">Logout</button>
+      <!-- زر يفتح صفحة المحاضرات -->
+      <a href="admin.html" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-white">
+        Lectures
+      </a>
+
+      <!-- زر تسجيل الخروج -->
+      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">
+        Logout
+      </button>
     </div>
   </nav>
 
-  <!-- Content -->
+  <!-- ================== المحتوى الرئيسي ================== -->
   <main class="flex-1 p-8 max-w-5xl mx-auto w-full">
+    
+    <!-- ===== نموذج إضافة طالب جديد ===== -->
     <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/20 shadow-lg">
       <h2 class="text-2xl font-semibold text-white mb-6">Add New Student</h2>
 
+      <!-- النموذج الذي يُدخل بيانات الطالب -->
       <form id="studentForm" class="grid grid-cols-2 gap-4">
-        <input id="studentName" type="text" placeholder="Full Name" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-        <input id="studentID" type="text" placeholder="University ID" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-        <input id="studentEmail" type="email" placeholder="Academic Email" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-        <input id="studentPassword" type="text" placeholder="Password" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-        <input id="studentLevel" type="text" placeholder="Level (1–4)" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-        <input id="studentGroup" type="text" placeholder="Group (A–C)" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-        <button type="submit" class="col-span-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition">+ Add Student</button>
+        <input id="studentName" type="text" placeholder="Full Name"
+          class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
+        <input id="studentID" type="text" placeholder="University ID"
+          class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
+        <input id="studentEmail" type="email" placeholder="Academic Email"
+          class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
+        <input id="studentPassword" type="text" placeholder="Password"
+          class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
+        <input id="studentLevel" type="text" placeholder="Level (1–4)"
+          class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
+        <input id="studentGroup" type="text" placeholder="Group (A–C)"
+          class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
+
+        <!-- زر الإرسال لإضافة الطالب -->
+        <button type="submit"
+          class="col-span-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition">
+          + Add Student
+        </button>
       </form>
     </div>
 
+    <!-- ===== قائمة عرض الطلاب ===== -->
     <div class="mt-10 bg-white/10 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg">
       <h3 class="text-xl font-semibold mb-4 text-white">Students List</h3>
+
+      <!-- جدول عرض بيانات الطلاب -->
       <div class="overflow-x-auto">
         <table class="min-w-full text-left text-white border border-white/10 rounded-lg">
           <thead class="bg-white/10 text-blue-200">
@@ -55,15 +91,23 @@
               <th class="py-3 px-4">Actions</th>
             </tr>
           </thead>
+
+          <!-- هنا يتم حقن الصفوف عبر JavaScript -->
           <tbody id="studentsTable" class="divide-y divide-white/10"></tbody>
         </table>
       </div>
     </div>
   </main>
 
+  <!-- ================== استدعاء ملفات الجافاسكربت ================== -->
+  <!-- ملف إدارة الطلاب -->
   <script src="assets/js/admin-students.js"></script>
+
+  <!-- ملف العمليات العامة (مثل تسجيل الخروج أو الفحص الأمني) -->
   <script src="assets/js/main.js"></script>
-<script src="assets/js/admin.js"></script>
+
+  <!-- ملف الأكواد الإدارية العامة -->
+  <script src="assets/js/admin.js"></script>
 
 </body>
 </html>

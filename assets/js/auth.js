@@ -1,22 +1,24 @@
-// ===== auth.js =====
+// ================== AUTHENTICATION SYSTEM ==================
 
-// بيانات ثابتة (ممكن تعدلها لاحقًا أو تسحبها من JSON)
+// تعريف مصفوفة المستخدمين المبدئية
+// تحتوي على بيانات الدخول (إيميل، باسورد، الدور، الاسم...)
+// لاحقًا ممكن تربطها بقاعدة بيانات حقيقية
 const users = [
   {
-    email: "admin@uni.edu.eg",
-    password: "admin123",
-    role: "admin",
-    name: "System Admin"
+    email: "admin@uni.edu.eg", // إيميل الأدمن
+    password: "admin123",      // كلمة السر للأدمن
+    role: "admin",              // الدور: مسؤول النظام
+    name: "System Admin"        // اسم المستخدم
   },
   {
-    email: "user0@uni.edu.eg",
-    password: "123456",
-    role: "student",
-    name: "user0",
-    level:"2",
-    group:"c"
+    email: "user0@uni.edu.eg", // إيميل الطالب
+    password: "123456",         // كلمة السر
+    role: "student",            // الدور: طالب
+    name: "user0",              // الاسم
+    level:"2",                  // المستوى الدراسي
+    group:"c"                   // المجموعة
   },
-    {
+  {
     email: "user00@uni.edu.eg",
     password: "1234566",
     role: "student",
@@ -58,72 +60,87 @@ const users = [
   }
 ];
 
-// عند تحميل الصفحة
+// ================== LOGIN HANDLER ==================
+// ينتظر تحميل الصفحة بالكامل لتجهيز عملية تسجيل الدخول
 document.addEventListener("DOMContentLoaded", () => {
+
+  // يحصل على عنصر الفورم الخاص بتسجيل الدخول
   const form = document.getElementById("loginForm");
+  if (!form) return; // لو الفورم مش موجود يوقف التنفيذ
 
-  if (!form) return;
-
+  // عند إرسال النموذج
   form.addEventListener("submit", (e) => {
-    e.preventDefault();
+    e.preventDefault(); // يمنع التحديث الافتراضي للصفحة
 
+    // يحصل على القيم المدخلة من المستخدم
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // تحقق من وجود المستخدم
+    // يبحث في المصفوفة عن مستخدم يطابق الإيميل والباسورد
     const user = users.find(
       (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
     );
 
+    // لو مفيش مستخدم مطابق → رسالة خطأ
     if (!user) {
       alert("Invalid academic email or password.");
       return;
     }
 
-    // إنشاء Session بسيط
+    // إنشاء كائن يمثل الجلسة الحالية (Session)
+    // يحتوي على بيانات المستخدم + وقت تسجيل الدخول
     const session = {
       email: user.email,
       role: user.role,
       name: user.name,
-      level:user.level,
-      group:user.group,
-      loginTime: new Date().toISOString()
+      level: user.level,
+      group: user.group,
+      loginTime: new Date().toISOString() // وقت الدخول الحالي
     };
 
-    // تخزين في localStorage
-localStorage.setItem("loggedInUser", JSON.stringify(session));
+    // حفظ الجلسة في localStorage عشان تبقى متاحة أثناء التصفح
+    localStorage.setItem("loggedInUser", JSON.stringify(session));
 
-    // توجيه حسب الدور
+    // توجيه المستخدم حسب دوره
     if (user.role === "admin") {
-      window.location.href = "admin.html";
+      window.location.href = "admin.html"; // لو أدمن → صفحة الأدمن
     } else {
-      window.location.href = "attendance.html";
+      window.location.href = "attendance.html"; // لو طالب → صفحة الحضور
     }
   });
 });
 
-// حماية الصفحات (تحقق من الـ Session)
+// ================== AUTH VALIDATION ==================
+// دالة لحماية الصفحات من الوصول غير المصرح
+// بتتحقق لو المستخدم مسجل دخول أو لا
 function checkAuth(allowedRole = null) {
-  const session = localStorage.getItem("sessionUser");
+  const session = localStorage.getItem("loggedInUser"); // قراءة الجلسة من التخزين المحلي
+
+  // لو مفيش جلسة → يرجع لصفحة تسجيل الدخول
   if (!session) {
     window.location.href = "index.html";
     return null;
   }
 
+  // تحويل النص المحفوظ لكائن JavaScript
   const user = JSON.parse(session);
 
-  // لو الصفحة ليها صلاحية معينة
+  // لو الصفحة مخصصة لدور معين (مثلاً admin فقط)
+  // والمستخدم مش من نفس الدور → يرجع للصفحة الرئيسية
   if (allowedRole && user.role !== allowedRole) {
     alert("Unauthorized access");
     window.location.href = "index.html";
     return null;
   }
 
+  // بيرجع بيانات المستخدم الجاهزة للاستخدام في الصفحة
   return user;
 }
 
-// تسجيل خروج
+// ================== LOGOUT FUNCTION ==================
+// دالة لتسجيل الخروج من النظام
+// بتحذف الجلسة من localStorage وتمنع الرجوع بالزر Back
 function logout() {
-  localStorage.removeItem("sessionUser");
-  window.location.href = "index.html";
+  localStorage.removeItem("loggedInUser"); // حذف بيانات الجلسة
+  window.location.replace("index.html");   // إعادة التوجيه بدون حفظ الصفحة في الـ history
 }
