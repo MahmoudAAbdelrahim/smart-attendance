@@ -52,11 +52,46 @@
     </div>
   </main>
 
-  <footer class="text-center text-blue-200 text-sm py-4">© 2025 Smart Attendance .All rights reserved.</footer>
+  <main class="flex-grow p-8">
+  <div class="max-w-4xl mx-auto">
+    <header class="mb-6 text-center">
+      <h2 class="text-2xl font-semibold text-white">
+        <span id="studentName" class="text-blue-300">Student</span>
+      </h2>
+      <p class="text-blue-200">Choose your lecture then request OTP to mark attendance.</p>
+    </header>
+
+    <!-- Lectures container -->
+    <div id="lecturesContainer" class="space-y-4"></div>
+
+    <div id="noLectures" class="text-center text-blue-200 mt-12 hidden">
+      <p class="text-lg font-medium">No lectures available for your group/level.</p>
+    </div>
+
+    <!-- My Attendance Section -->
+    <section class="mt-12">
+      <h3 class="text-xl font-semibold text-blue-300 mb-4 text-center">📚 محاضراتي</h3>
+      <div id="myAttendanceContainer" class="bg-white/20 rounded-2xl p-4 backdrop-blur-md">
+        <table class="w-full text-left text-white border-separate border-spacing-y-2">
+          <thead>
+            <tr class="text-blue-200">
+              <th class="py-2">Lecture</th>
+              <th class="py-2">Date</th>
+              <th class="py-2">OTP Used</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+
+  <footer class="text-center text-blue-200 text-sm py-4">© 2025 Codix. All rights reserved.</footer>
 
   <!-- auth.js must be loaded before attendance.js -->
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/attendance.js"></script>
 </body>
 </html>
-

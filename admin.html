@@ -3,113 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Smart Attendance</title>
+  <title>Lectures Management | Smart Attendance</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
+</head>
   <style>
     body {
+      font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, #0f172a, #1e3a8a, #3b82f6);
       background-size: 300% 300%;
-      animation: bgMove 10s ease infinite;
-      font-family: 'Inter', sans-serif;
+      color: #f1f5f9;
     }
- 
   </style>
-</head>
+<body class="min-h-screen flex flex-col text-gray-100">
 
-<body class="text-gray-100 min-h-screen flex flex-col">
   <!-- Navbar -->
   <nav class="bg-white/10 backdrop-blur-md border-b border-white/20 p-4 flex justify-between items-center shadow-md">
-    <div class="flex items-center gap-2">
-      <img src="assets/img/logo.png" class="w-10 h-10 drop-shadow-lg" alt="Logo">
-      <h1 class="text-xl font-semibold tracking-tight text-white">Smart Attendance <span class="text-blue-300">Dashboard</span></h1>
+    <h1 class="text-xl font-semibold text-white">Smart Attendance <span class="text-green-300">Lectures</span></h1>
+    <div class="flex gap-3">
+      <a href="admin-students.html" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white">Students</a>
+      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">Logout</button>
     </div>
-    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200">
-      Logout
-    </button>
   </nav>
 
-  <!-- Main Container -->
-  <main class="flex-1 p-8 max-w-6xl mx-auto w-full">
-    <!-- Tabs -->
-    <div class="flex justify-center space-x-4 mb-8">
-      <button id="studentsTab" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md transition">Students</button>
-      <button id="lecturesTab" class="px-5 py-2 bg-white/20 hover:bg-blue-600 hover:text-white rounded-lg shadow-md transition">Lectures</button>
+  <!-- Content -->
+  <main class="flex-1 p-8 max-w-5xl mx-auto w-full">
+    <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/20 shadow-lg">
+      <h2 class="text-2xl font-semibold text-white mb-6">Add New Lecture</h2>
+
+      <form id="lectureForm" class="grid grid-cols-2 gap-4">
+        <input id="lectureName" type="text" placeholder="Lecture Name" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
+        <input id="lectureTime" type="datetime-local" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
+        <input id="lectureLevel" type="text" placeholder="Level" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
+        <input id="lectureGroup" type="text" placeholder="Group" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
+        <button type="submit" class="col-span-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition">+ Add Lecture</button>
+      </form>
     </div>
 
-    <!-- Students Section -->
-    <section id="studentsSection" class="transition-all duration-500">
-      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/20 shadow-lg">
-        <h2 class="text-2xl font-semibold text-white mb-6"> Add New Student</h2>
-
-        <form id="studentForm" class="grid grid-cols-2 gap-4">
-          <input id="studentName" type="text" placeholder="Full Name" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-          <input id="studentID" type="text" placeholder="University ID" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-          <input id="studentEmail" type="email" placeholder="Academic Email" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-          <input id="studentPassword" type="text" placeholder="Password" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-          <input id="studentLevel" type="text" placeholder="Level (1–4)" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-          <input id="studentGroup" type="text" placeholder="Group (A–C)" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-blue-400 outline-none" required>
-          <button type="submit" class="col-span-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition duration-200 hover:scale-[1.02]">+ Add Student</button>
-        </form>
+    <div class="mt-10 bg-white/10 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg">
+      <h3 class="text-xl font-semibold mb-4 text-white">Lectures List</h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-white border border-white/10 rounded-lg">
+          <thead class="bg-white/10 text-green-200">
+            <tr>
+              <th class="py-3 px-4">Lecture</th>
+              <th class="py-3 px-4">Time</th>
+              <th class="py-3 px-4">Level</th>
+              <th class="py-3 px-4">Group</th>
+              <th class="py-3 px-4">OTP</th>
+              <th class="py-3 px-4">Status</th>
+              <th class="py-3 px-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="lecturesTable" class="divide-y divide-white/10"></tbody>
+        </table>
       </div>
-
-      <div class="mt-10 bg-white/10 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg">
-        <h3 class="text-xl font-semibold mb-4 text-white"> Students List</h3>
-        <div class="overflow-x-auto">
-          <table class="min-w-full text-left text-white border border-white/10 rounded-lg">
-            <thead class="bg-white/10 text-blue-200">
-              <tr>
-                <th class="py-3 px-4">Name</th>
-                <th class="py-3 px-4">ID</th>
-                <th class="py-3 px-4">Email</th>
-                <th class="py-3 px-4">Level</th>
-                <th class="py-3 px-4">Group</th>
-                <th class="py-3 px-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="studentsTable" class="divide-y divide-white/10"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- Lectures Section -->
-    <section id="lecturesSection" class="hidden transition-all duration-500">
-      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/20 shadow-lg">
-        <h2 class="text-2xl font-semibold text-white mb-6"> Add New Lecture</h2>
-
-        <form id="lectureForm" class="grid grid-cols-2 gap-4">
-          <input id="lectureName" type="text" placeholder="Lecture Name" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
-          <input id="lectureTime" type="datetime-local" class="p-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
-          <input id="lectureLevel" type="text" placeholder="Level" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
-          <input id="lectureGroup" type="text" placeholder="Group" class="p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 border border-white/30 focus:ring-2 focus:ring-green-400 outline-none" required>
-          <button type="submit" class="col-span-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition duration-200 hover:scale-[1.02]">+ Add Lecture</button>
-        </form>
-      </div>
-
-      <div class="mt-10 bg-white/10 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg">
-        <h3 class="text-xl font-semibold mb-4 text-white"> Lectures List</h3>
-        <div class="overflow-x-auto">
-          <table class="min-w-full text-left text-white border border-white/10 rounded-lg">
-            <thead class="bg-white/10 text-green-200">
-              <tr>
-                <th class="py-3 px-4">Lecture</th>
-                <th class="py-3 px-4">Time</th>
-                <th class="py-3 px-4">Level</th>
-                <th class="py-3 px-4">Group</th>
-                <th class="py-3 px-4">OTP</th>
-                <th class="py-3 px-4">role</th>
-                <th class="py-3 px-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="lecturesTable" class="divide-y divide-white/10"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
-  <!-- JS -->
   <script src="assets/js/admin.js"></script>
+  <script src="assets/js/main.js"></script>
+<script src="assets/js/admin-students.js"></script>
+
 </body>
 </html>

@@ -16,6 +16,22 @@ const users = [
     level:"2",
     group:"c"
   },
+    {
+    email: "user00@uni.edu.eg",
+    password: "1234566",
+    role: "student",
+    name: "user00",
+    level:"2",
+    group:"c"
+  },
+  {
+    email: "user000@uni.edu.eg",
+    password: "12345666",
+    role: "student",
+    name: "user000",
+    level:"2",
+    group:"c"
+  },
   {
     email: "user1@uni.edu.eg",
     password: "654321",
@@ -111,4 +127,3 @@ function logout() {
   localStorage.removeItem("sessionUser");
   window.location.href = "index.html";
 }
-

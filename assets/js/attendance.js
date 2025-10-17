@@ -8,6 +8,7 @@ if (!user || user.role !== "student") {
 const lecturesContainer = document.getElementById("lecturesContainer");
 const studentName = document.getElementById("studentName");
 const logoutBtn = document.getElementById("logoutBtn");
+const attendanceTableBody = document.getElementById("attendanceTableBody");
 
 // ============ DATA ============
 let lectures = JSON.parse(localStorage.getItem("lecturesList")) || [];
@@ -35,14 +36,18 @@ function renderLectures() {
 
   if (availableLectures.length === 0) {
     lecturesContainer.innerHTML = `
-      <p class="text-gray-500 text-center mt-6">No active lectures right now </p>
+      <p class="text-gray-500 text-center mt-6">No active lectures right now</p>
     `;
     return;
   }
 
   availableLectures.forEach((lecture) => {
     const card = document.createElement("div");
-    card.className = " shadow-md p-4 rounded mb-4";
+    card.className = "shadow-md p-4 rounded mb-4 bg-white/80 text-gray-900";
+
+    const alreadyMarked = attendance.some(
+      (a) => a.email === user.email && a.lectureId === lecture.id
+    );
 
     card.innerHTML = `
       <h3 class="text-lg font-semibold">${lecture.name}</h3>
@@ -50,11 +55,16 @@ function renderLectures() {
       <p><strong>Level:</strong> ${lecture.level.toUpperCase()}</p>
       <p><strong>Group:</strong> ${lecture.group.toUpperCase()}</p>
       <div class="mt-3">
-<input type="text" id="otp-${lecture.id}" placeholder="Enter OTP"
-  class="border p-2 rounded w-1/2 text-black" />
-
-        <button onclick="markAttendance(${lecture.id})"
-          class="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700 ml-2">Submit</button>
+        ${
+          alreadyMarked
+            ? `<p class="text-green-600 font-semibold">✅ تم تسجيل حضورك بالفعل</p>`
+            : `
+              <input type="text" id="otp-${lecture.id}" placeholder="Enter OTP"
+                class="border p-2 rounded w-1/2 text-black" />
+              <button id="submit-${lecture.id}" onclick="markAttendance(${lecture.id})"
+                class="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700 ml-2">Submit</button>
+            `
+        }
       </div>
     `;
     lecturesContainer.appendChild(card);
@@ -72,16 +82,15 @@ function markAttendance(lectureId) {
   }
 
   if (enteredOtp !== lecture.otp.toString()) {
-    alert(" Invalid OTP. Try again!");
+    alert("Invalid OTP. Try again!");
     return;
   }
 
-  // Check if already attended
   const alreadyMarked = attendance.some(
     (a) => a.email === user.email && a.lectureId === lectureId
   );
   if (alreadyMarked) {
-    alert(" You already marked attendance for this lecture.");
+    alert("You already marked attendance for this lecture.");
     return;
   }
 
@@ -90,17 +99,44 @@ function markAttendance(lectureId) {
     email: user.email,
     lectureName: lecture.name,
     lectureId: lecture.id,
+    otpUsed: enteredOtp,
     level: lecture.level,
     group: lecture.group,
-    time: new Date().toISOString(),
+    date: new Date().toLocaleString(),
   };
 
   attendance.push(record);
   localStorage.setItem("attendanceList", JSON.stringify(attendance));
 
-  alert(" Attendance marked successfully!");
-  document.getElementById(`otp-${lectureId}`).value = "";
+  alert("تم التسجيل بنجاح ✅");
+  renderLectures();
+  renderAttendanceTable();
+}
+
+// ============ RENDER ATTENDANCE TABLE ============
+function renderAttendanceTable() {
+  attendanceTableBody.innerHTML = "";
+
+  const myAttendance = attendance.filter((a) => a.email === user.email);
+
+  if (myAttendance.length === 0) {
+    attendanceTableBody.innerHTML = `
+      <tr><td colspan="3" class="text-center text-blue-200 py-2">No attendance records yet</td></tr>
+    `;
+    return;
+  }
+
+  myAttendance.forEach((record) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="py-2">${record.lectureName}</td>
+      <td class="py-2">${record.date}</td>
+      <td class="py-2">${record.otpUsed}</td>
+    `;
+    attendanceTableBody.appendChild(tr);
+  });
 }
 
 // ============ INITIAL RENDER ============
 renderLectures();
+renderAttendanceTable();
