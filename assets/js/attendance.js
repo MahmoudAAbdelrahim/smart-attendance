@@ -57,7 +57,7 @@ function renderLectures() {
       <div class="mt-3">
         ${
           alreadyMarked
-            ? `<p class="text-green-600 font-semibold">✅ تم تسجيل حضورك بالفعل</p>`
+            ? `<p class="text-green-600 font-semibold">✅ Your attendance has already been registered.   </p>`
             : `
               <input type="text" id="otp-${lecture.id}" placeholder="Enter OTP"
                 class="border p-2 rounded w-1/2 text-black" />
@@ -108,7 +108,7 @@ function markAttendance(lectureId) {
   attendance.push(record);
   localStorage.setItem("attendanceList", JSON.stringify(attendance));
 
-  alert("تم التسجيل بنجاح ✅");
+  alert("Registration completed successfully");
   renderLectures();
   renderAttendanceTable();
 }
